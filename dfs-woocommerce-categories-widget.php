@@ -1,6 +1,6 @@
 <?php
 /*
- Plugin Name: DF Woocommerce Categories Widget
+ Plugin Name: DF WooCommerce Categories Widget
  Description: Custom Woocommerce Categories Widget
  Version: 1.0
  Author: Denis Fedorov
@@ -14,6 +14,21 @@
 if ( ! defined( 'WPINC' ) ) {
 	die;
 }
+
+// WooCommerce must be enabled
+if ( ! class_exists( 'WooCommerce' ) ) : 
+
+// unless we throw a notice
+function dfs_wc_cat_widget__admin_notice_woocommerce_required() {
+    ?>
+    <div class="notice notice-error">
+        <p><?php _e( 'DF WooCommerce Categories Widget plugin requires WooCommerce to be installed and active!'); ?></p>
+    </div>
+    <?php
+}
+add_action( 'admin_notices', 'dfs_wc_cat_widget__admin_notice_woocommerce_required' );
+
+else:
 
 if(!class_exists('WC_Widget')) {
     require_once ABSPATH . 'wp-content/plugins/woocommerce/includes/abstracts/abstract-wc-widget.php';
@@ -239,7 +254,9 @@ class DFS_WC_Widget_Product_Categories extends WC_Widget {
 	}
 }
 
-function dfs_woocommerce_widget_product_categories_register() {
+function dfs_wc_cat_widget__register() {
 	register_widget( 'DFS_WC_Widget_Product_Categories' );
 }
-add_action( 'widgets_init', 'dfs_woocommerce_widget_product_categories_register' );
+add_action( 'widgets_init', 'dfs_wc_cat_widget__register' );
+
+endif;
