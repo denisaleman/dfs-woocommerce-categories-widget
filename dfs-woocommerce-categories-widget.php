@@ -8,7 +8,7 @@
  * Author URI: https://www.upwork.com/freelancers/~01ad0e773956a34ffd
  * License: GNU General Public License v3.0
  * License URI: https://www.gnu.org/licenses/gpl.txt
- * Text Domain: dfs-wc-categories-widget
+ * Text Domain: dfs-wc-cat-widget
  */
 
 // If this file is called directly, abort.
@@ -23,7 +23,7 @@ if ( ! class_exists( 'WooCommerce' ) ) :
 function dfs_wc_cat_widget__admin_notice_woocommerce_required() {
     ?>
     <div class="notice notice-error">
-        <p><?php _e( 'DF WooCommerce Categories Widget plugin requires WooCommerce to be installed and active!'); ?></p>
+        <p><?php _e( 'DF WooCommerce Categories Widget plugin requires WooCommerce to be installed and active!', 'dfs-wc-cat-widget'); ?></p>
     </div>
     <?php
 }
@@ -58,54 +58,54 @@ class DFS_WC_Widget_Product_Categories extends WC_Widget {
 	 */
 	public function __construct() {
 		$this->widget_cssclass    = 'woocommerce widget_product_categories';
-		$this->widget_description = __( 'A custom list of product categories.', 'dfs-wc-categories-widget' );
+		$this->widget_description = __( 'A custom list of product categories.', 'dfs-wc-cat-widget' );
 		$this->widget_id          = 'dfs_woocommerce_product_categories';
-		$this->widget_name        = __( 'DF Product Categories', 'dfs-wc-categories-widget' );
+		$this->widget_name        = __( 'DF Product Categories', 'dfs-wc-cat-widget' );
 		
 		$this->settings           = array(
 			'title'              => array(
 				'type'  => 'text',
-				'std'   => __( 'Product categories', 'dfs-wc-categories-widget' ),
-				'label' => __( 'Title', 'dfs-wc-categories-widget' ),
+				'std'   => __( 'Product categories', 'dfs-wc-cat-widget' ),
+				'label' => __( 'Title', 'dfs-wc-cat-widget' ),
 			),
 			'ulclass'              => array(
 				'type'  => 'text',
 				'std'   => '',
-				'label' => __( 'Ul classname', 'dfs-wc-categories-widget' ),
+				'label' => __( 'Ul classname', 'dfs-wc-cat-widget' ),
 			),
 			'orderby'            => array(
 				'type'    => 'select',
 				'std'     => 'name',
-				'label'   => __( 'Order by', 'dfs-wc-categories-widget' ),
+				'label'   => __( 'Order by', 'dfs-wc-cat-widget' ),
 				'options' => array(
-					'order' => __( 'Category order', 'dfs-wc-categories-widget' ),
-					'name'  => __( 'Name', 'dfs-wc-categories-widget' ),
+					'order' => __( 'Category order', 'dfs-wc-cat-widget' ),
+					'name'  => __( 'Name', 'dfs-wc-cat-widget' ),
 				),
 			),
 			'count'              => array(
 				'type'  => 'checkbox',
 				'std'   => 0,
-				'label' => __( 'Show product counts', 'dfs-wc-categories-widget' ),
+				'label' => __( 'Show product counts', 'dfs-wc-cat-widget' ),
 			),
 			'hide_empty'         => array(
 				'type'  => 'checkbox',
 				'std'   => 0,
-				'label' => __( 'Hide empty categories', 'dfs-wc-categories-widget' ),
+				'label' => __( 'Hide empty categories', 'dfs-wc-cat-widget' ),
 			),
 			'excludecurr'              => array(
 				'type'  => 'checkbox',
 				'std'   => 1,
-				'label' => __( 'Exclude current category', 'dfs-wc-categories-widget' ),
+				'label' => __( 'Exclude current category', 'dfs-wc-cat-widget' ),
 			),
 			'excludedefault'              => array(
 				'type'  => 'checkbox',
 				'std'   => 1,
-				'label' => __( 'Exclude default category', 'dfs-wc-categories-widget' ),
+				'label' => __( 'Exclude default category', 'dfs-wc-cat-widget' ),
 			),
 			'excludecategories'              => array(
 				'type'  => 'textarea',
-				'label' => __( 'Exclude categories by slug', 'dfs-wc-categories-widget' ),
-				'desc'  => __( 'Multiple categories should be separated by comma' )
+				'label' => __( 'Exclude categories by slug', 'dfs-wc-cat-widget' ),
+				'desc'  => __( 'Multiple categories should be separated by comma', 'dfs-wc-cat-widget' )
 			)
 		);
 		parent::__construct();
