@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Plugin Name: DF WooCommerce Categories Widget
+ * Plugin Name: DFS WooCommerce Categories Widget
  * Description: Custom Woocommerce Categories Widget
  * Version: 1.0
  * Author: Denis Fedorov
