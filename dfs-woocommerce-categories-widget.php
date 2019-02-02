@@ -47,7 +47,7 @@ class DFS_WC_Widget_Product_Categories extends WC_Widget {
 	/**
 	 * Current Category.
 	 *
-	 * @var bool
+	 * @var object
 	 */
 	public $current_cat;
 
