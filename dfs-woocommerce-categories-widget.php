@@ -63,26 +63,26 @@ class DFS_WC_Widget_Product_Categories extends WC_Widget {
 		$this->widget_name        = __( 'DF Product Categories', 'dfs-wc-cat-widget' );
 		
 		$this->settings           = array(
-			'title'              => array(
-				'type'  => 'text',
-				'std'   => __( 'Product categories', 'dfs-wc-cat-widget' ),
-				'label' => __( 'Title', 'dfs-wc-cat-widget' ),
+			'title'	=> array(
+				'type'	=> 'text',
+				'std'	=> __( 'Product categories', 'dfs-wc-cat-widget' ),
+				'label'	=> __( 'Title', 'dfs-wc-cat-widget' ),
 			),
-			'ulclass'              => array(
-				'type'  => 'text',
-				'std'   => '',
-				'label' => __( 'Ul classname', 'dfs-wc-cat-widget' ),
+			'ulclass' => array(
+				'type'	=> 'text',
+				'std'	=> '',
+				'label'	=> __( 'Ul classname', 'dfs-wc-cat-widget' ),
 			),
-			'orderby'            => array(
-				'type'    => 'select',
-				'std'     => 'name',
-				'label'   => __( 'Order by', 'dfs-wc-cat-widget' ),
+			'orderby' => array(
+				'type'	=> 'select',
+				'std'	=> 'name',
+				'label' => __( 'Order by', 'dfs-wc-cat-widget' ),
 				'options' => array(
-					'order' => __( 'Category order', 'dfs-wc-cat-widget' ),
-					'name'  => __( 'Name', 'dfs-wc-cat-widget' ),
+					'order'	=> __( 'Category order', 'dfs-wc-cat-widget' ),
+					'name'	=> __( 'Name', 'dfs-wc-cat-widget' ),
 				),
 			),
-			'count'              => array(
+			'count' => array(
 				'type'  => 'checkbox',
 				'std'   => 0,
 				'label' => __( 'Show product counts', 'dfs-wc-cat-widget' ),
@@ -121,13 +121,18 @@ class DFS_WC_Widget_Product_Categories extends WC_Widget {
 	public function widget( $args, $instance ) {
 		global $wp_query, $post;
 
-		$count              = isset( $instance['count'] ) ? $instance['count'] : $this->settings['count']['std'];
-		$orderby            = isset( $instance['orderby'] ) ? $instance['orderby'] : $this->settings['orderby']['std'];
-		$exclude_current         = isset( $instance['excludecurr'] ) ? $instance['excludecurr'] : $this->settings['excludecurr']['std'];
-		$exclude_default = isset( $instance['excludedefault'] ) ? $instance['excludedefault'] : $this->settings['excludedefault']['std'];
-		$hide_empty         = isset( $instance['hide_empty'] ) ? $instance['hide_empty'] : $this->settings['hide_empty']['std'];
-		$ul_class         = isset( $instance['ulclass'] ) ? $instance['ulclass'] : $this->settings['ulclass']['std'];
-		$exclude_categories         = isset( $instance['excludecategories'] ) ? $instance['excludecategories'] : $this->settings['excludecategories']['std'];
+		// Show widget only in product category
+		if ( !is_tax( 'product_cat' ) ) {
+			return;
+		}
+
+		$count 				= isset( $instance['count'] ) ? $instance['count'] : $this->settings['count']['std'];
+		$orderby			= isset( $instance['orderby'] ) ? $instance['orderby'] : $this->settings['orderby']['std'];
+		$exclude_current	= isset( $instance['excludecurr'] ) ? $instance['excludecurr'] : $this->settings['excludecurr']['std'];
+		$exclude_default	= isset( $instance['excludedefault'] ) ? $instance['excludedefault'] : $this->settings['excludedefault']['std'];
+		$hide_empty 		= isset( $instance['hide_empty'] ) ? $instance['hide_empty'] : $this->settings['hide_empty']['std'];
+		$ul_class			= isset( $instance['ulclass'] ) ? $instance['ulclass'] : $this->settings['ulclass']['std'];
+		$exclude_categories	= isset( $instance['excludecategories'] ) ? $instance['excludecategories'] : $this->settings['excludecategories']['std'];
 
 		
 		if($exclude_categories){
@@ -175,75 +180,76 @@ class DFS_WC_Widget_Product_Categories extends WC_Widget {
 		$_args = array();
 
 
-		if ( is_tax( 'product_cat' ) ) {
-			// if we are in product category
-			// echo 'we are in product category';	
-			$this->current_cat   = $wp_query->queried_object;
-			$this->parent_cat = $this->current_cat->parent;
+		// if we are in product category
+		// echo 'we are in product category';	
+		$this->current_cat   = $wp_query->queried_object;
+		$this->parent_cat = $this->current_cat->parent;
+		
+		// echo '<br>current cat id: ' . $this->current_cat->term_id;
+		// echo '<br>parent cat id: ' . $this->parent_cat;
+
+		$children = get_term_children($this->current_cat->term_id, 'product_cat');
+		if ($children) {
+			// echo '<br>has children ('.count($children).')';
+
+			$_args = array(
+				'child_of' => $this->current_cat->term_id
+			);
 			
-			// echo '<br>current cat id: ' . $this->current_cat->term_id;
-			// echo '<br>parent cat id: ' . $this->parent_cat;
-
-			$children = get_term_children($this->current_cat->term_id, 'product_cat');
-			if ($children) {
-				// echo '<br>has children ('.count($children).')';
-
-				$_args = array(
-					'child_of' => $this->current_cat->term_id
-				);
+		} elseif ( $this->parent_cat ) {
+			// echo '<br>has no children but has parent';
+			
+			$parent_cat_id = $this->parent_cat;
+			$current_cat_id = $this->current_cat->term_id;
+			$this_level = true;
+			do {
+				// try to find siblings
+				$parent_cat_obj = get_term_by( 'id', $parent_cat_id, 'product_cat');
 				
-			} elseif ($this->parent_cat) {
-				// echo '<br>has no children but has parent';
-				
-				$parent_cat_id = $this->parent_cat;
-				$current_cat_id = $this->current_cat->term_id;
-				$this_level = true;
-				do {
-					// try to find siblings
-					$parent_cat_obj = get_term_by( 'id', $parent_cat_id, 'product_cat');
-					
-					$siblings = get_term_children($parent_cat_id, 'product_cat');
+				$siblings = get_term_children($parent_cat_id, 'product_cat');
 
-					if( $this_level ) {
-						// excluding itself
-						$exclude = $current_cat_id;
-					}
-					
-					$current_cat_id = $parent_cat_id;
-					$this_level = false;
-				} while (!$siblings && ($parent_cat_id = $parent_cat_obj->parent));
-				
-				if($siblings){
-					if($exclude && $exclude_current)
-						unset($siblings[array_search($exclude, $siblings)]);
-					$_args = array(
-						'include' => implode( ',', $siblings )
-					);
-				};
-
-			} else {
-				// echo '<br>has neihter children nor parent';
-				if($exclude_categories) {
-					$exclude_categories[] = $this->current_cat->term_id;
-					$_args = array(
-						'exclude' => $exclude_categories,
-					);
+				if( $this_level ) {
+					// excluding itself
+					$exclude = $current_cat_id;
 				}
-				else
-					$_args = array(
-						'exclude' => array($this->current_cat->term_id),
-					);
+				
+				$current_cat_id = $parent_cat_id;
+				$this_level = false;
+			} while (!$siblings && ($parent_cat_id = $parent_cat_obj->parent));
+			
+			if($siblings) {
+				if($exclude && $exclude_current)
+					unset($siblings[array_search($exclude, $siblings)]);
+				$_args = array(
+					'include' => implode( ',', $siblings )
+				);
+			};
+
+		} else {
+			// echo '<br>has neihter children nor parent';
+			if( $exclude_categories ) {
+				$exclude_categories[] = $this->current_cat->term_id;
+				$_args = array(
+					'exclude' => $exclude_categories,
+				);
+			} else {
+				$_args = array(
+					'exclude' => array( $this->current_cat->term_id ),
+				);
 			}
 		}
 
 	
-		if(!empty($_args))
+		if( !empty( $_args ) ) {
 			$list_args = array_merge( $list_args, $_args );
+		}
 		//print_r($list_args);
 
+
+		// output
 		$this->widget_start( $args, $instance );
 		
-		if($ul_class) {
+		if( !empty( $ul_class ) ) {
 			echo "<ul class=\"product-categories df-product-categories {$ul_class}\">";
 		} else {
 			echo '<ul class="product-categories df-product-categories">';
