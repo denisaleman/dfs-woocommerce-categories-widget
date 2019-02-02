@@ -1,14 +1,15 @@
 <?php
-/*
- Plugin Name: DF WooCommerce Categories Widget
- Description: Custom Woocommerce Categories Widget
- Version: 1.0
- Author: Denis Fedorov
- Author URI: https://www.upwork.com/freelancers/~01ad0e773956a34ffd
- License: GNU General Public License v3.0
- License URI: https://www.gnu.org/licenses/gpl.txt
- Text Domain: dfs-wc-categories-widget
-*/
+
+/**
+ * Plugin Name: DF WooCommerce Categories Widget
+ * Description: Custom Woocommerce Categories Widget
+ * Version: 1.0
+ * Author: Denis Fedorov
+ * Author URI: https://www.upwork.com/freelancers/~01ad0e773956a34ffd
+ * License: GNU General Public License v3.0
+ * License URI: https://www.gnu.org/licenses/gpl.txt
+ * Text Domain: dfs-wc-categories-widget
+ */
 
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
