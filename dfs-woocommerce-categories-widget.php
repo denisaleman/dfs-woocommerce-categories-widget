@@ -10,6 +10,11 @@
  http://www.gnu.org/licenses/gpl.txt
 */
 
+// If this file is called directly, abort.
+if ( ! defined( 'WPINC' ) ) {
+	die;
+}
+
 if(!class_exists('WC_Widget')) {
     require_once ABSPATH . 'wp-content/plugins/woocommerce/includes/abstracts/abstract-wc-widget.php';
 }
