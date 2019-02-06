@@ -16,8 +16,12 @@ if (!defined('WPINC')) {
 	die;
 }
 
-// WooCommerce must be enabled
-if (!class_exists('WooCommerce')) : 
+/**
+ * Check if WooCommerce is active
+ *
+ * https://docs.woocommerce.com/document/create-a-plugin/
+ **/
+if (!in_array('woocommerce/woocommerce.php', apply_filters('active_plugins', get_option( 'active_plugins')))) :
 
 	// unless we throw a notice
 	function dfs_wc_cat_widget__admin_notice_woocommerce_required() {
