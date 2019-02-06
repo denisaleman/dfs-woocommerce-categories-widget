@@ -23,7 +23,7 @@ if ( ! class_exists( 'WooCommerce' ) ) :
 function dfs_wc_cat_widget__admin_notice_woocommerce_required() {
     ?>
     <div class="notice notice-error">
-        <p><?php _e( 'DF WooCommerce Categories Widget plugin requires WooCommerce to be installed and active!', 'dfs-wc-cat-widget'); ?></p>
+        <p><?php _e( 'DFS WooCommerce Categories Widget: WooCommerce is required to be installed and active!', 'dfs-wc-cat-widget'); ?></p>
     </div>
     <?php
 }
